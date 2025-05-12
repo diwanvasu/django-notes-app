@@ -1,21 +1,31 @@
-FROM python:3.9
+# Use an official Python image as the base
+FROM python:3.10-slim
 
+# Set the working directory
 WORKDIR /app/backend
 
-COPY requirements.txt /app/backend
-#RUN apt-get update \
-    #&& apt-get upgrade -y \
-    #&& apt-get install -y gcc default-libmysqlclient-dev pkg-config \
-    #&& rm -rf /var/lib/apt/lists/*
+# Copy only requirements first to leverage Docker cache
+COPY requirements.txt .
 
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y gcc default-libmysqlclient-dev pkg-config && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install app dependencies
-#RUN pip install mysqlclient
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir mysqlclient && \
+    pip install --no-cache-dir -r requirements.txt
 
-COPY . /app/backend
+# Copy the rest of the application code
+COPY . .
 
+# Expose port
 EXPOSE 8000
-CMD python /app/backend/manage.py runserver 0.0.0.0:8000
-#RUN python manage.py migrate
-#RUN python manage.py makemigrations
+
+# You can uncomment these if needed in container startup:
+# RUN python manage.py makemigrations
+# RUN python manage.py migrate
+
+# Define default command (optional)
+ CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
