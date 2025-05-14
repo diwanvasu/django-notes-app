@@ -17,7 +17,7 @@ services:
     build:
       context: .
     # image: diwanvasim/notest-app:latest
-    container_name: "diwanvasim/notest-app:latest"
+    # container_name: "diwanvasim/notest-app:latest"
     ports:
       - "8000:8000"
     command: sh -c "python manage.py migrate --noinput && gunicorn notesapp.wsgi --bind 0.0.0.0:8000"
