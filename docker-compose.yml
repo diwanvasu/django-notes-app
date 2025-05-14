@@ -16,7 +16,7 @@ services:
   django_app:
     #build:
       #context: .
-    image: /
+    image: diwanvasim/notest-app:latest
     container_name: "diwanvasim/notest-app:latest"
     ports:
       - "8000:8000"
