@@ -14,9 +14,9 @@ services:
 #       - notes-app-nw
 
   django_app:
-   # build:
-    #  context: .
-    image: diwanvasim/notest-app:latest
+    build:
+      context: .
+   # image: diwanvasim/notest-app:latest
    # container_name: "django_cont"
     ports:
       - "8000:8000"
